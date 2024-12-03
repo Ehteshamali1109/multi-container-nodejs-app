@@ -1,0 +1,19 @@
+version: '3.8'  # Specifies the Compose file format version
+
+services:
+  backend:  # Service named "backend"
+    build: ./backend  # Builds the Docker image from the `./backend` directory (Dockerfile must be there)
+    ports:
+      - "3000:3000"  # Maps port 3000 on the host to port 3000 in the container
+    depends_on:
+      - mongo  # Ensures the "mongo" service starts before the "backend" service
+
+  mongo:  # Service named "mongo"
+    image: mongo:latest  # Pulls the latest official MongoDB image from Docker Hub
+    ports:
+      - "27017:27017"  # Maps port 27017 on the host to port 27017 in the container
+    volumes:
+      - mongo-data:/data/db  # Named volume "mongo-data" is used to persist MongoDB data
+
+volumes:
+  mongo-data:  # Declares a named volume for MongoDB data persistence
